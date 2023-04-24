@@ -3,17 +3,24 @@ package org.example;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
 
 
 public class UITest {
+
+    @BeforeEach
+    public void setUp() {
+        open("https://profile.esto.ee/login");
+    }
+
     @Test
     public void correctLoginMobileID() {
-        open("https://profile.esto.ee/login/mobile-id");
+        $(By.xpath("//*[@data-cy=\"method-mobile-id\"]")).click();
 
         SelenideElement mobileInput = $(By.xpath("//*[@data-cy=\"mobile-id-phone-input\"]/div/input"));
         SelenideElement idInput = $(By.xpath("//*[@data-cy=\"mobile-id-id-input\"]/div/input"));
@@ -28,7 +35,7 @@ public class UITest {
 
     @Test
     public void correctLoginSmartID() {
-        open("https://profile.esto.ee/login/smart-id");
+        $(By.xpath("//*[@data-cy=\"method-smart-id\"]")).click();
 
         SelenideElement idInput = $(By.xpath("//*[@data-cy=\"smart-id-input\"]/div/input"));
 
@@ -41,7 +48,7 @@ public class UITest {
 
     @Test
     public void correctLoginPassword() {
-        open("https://profile.esto.ee/login/password");
+        $(By.xpath("//*[@data-cy=\"method-password\"]")).click();
 
         SelenideElement nameInput = $(By.xpath("//*[@data-cy=\"username-input\"]/div/input"));
         SelenideElement passwordInput = $(By.xpath("//*[@data-cy=\"password-input\"]/div/input"));
@@ -55,7 +62,7 @@ public class UITest {
 
     @Test
     public void emptyLoginPassword() {
-        open("https://profile.esto.ee/login/password");
+        $(By.xpath("//*[@data-cy=\"method-password\"]")).click();
 
 
         $(By.xpath("//*[@data-cy=\"password-login-button\"]")).click();
@@ -65,7 +72,7 @@ public class UITest {
 
     @Test
     public void wrongIdLoginSmartID() {
-        open("https://profile.esto.ee/login/smart-id");
+        $(By.xpath("//*[@data-cy=\"method-smart-id\"]")).click();
 
         SelenideElement idInput = $(By.xpath("//*[@data-cy=\"smart-id-input\"]/div/input"));
 
@@ -74,6 +81,10 @@ public class UITest {
         $(By.xpath("//*[@data-cy=\"smart-id-validation-error\"]"))
                 .shouldBe(Condition.visible);
 
+    }
+    @AfterEach
+    public void setDown() {
+        closeWebDriver();
     }
 
 }
